@@ -1,0 +1,15 @@
+django-cors-headers
+django
+python-dotenv
+daphne
+djangorestframework
+channels
+django-cron
+#django-mysql
+mysqlclient
+pymysql
+
+guardrails-ai
+pymupdf
+langchain_community
+langchain

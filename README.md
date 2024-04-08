@@ -31,4 +31,4 @@ mysql -u root
 Then inside the panel
 ```
 CREATE DATABASE hackathon_db;
-```
+
