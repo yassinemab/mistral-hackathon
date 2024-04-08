@@ -1,8 +1,18 @@
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.docstore.document import Document
+from guardrail_local import pdf_to_json
+
 import re
 import base64
 import tempfile
+import json
+
+def structure_date(base64):
+    pdf = read_pdf(base64)
+    json = pdf_to_json(pdf)
+    print(json)
+
+    return 200
 
 
 def read_pdf(document):
