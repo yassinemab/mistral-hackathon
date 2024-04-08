@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from ..models import DocumentDetails
 from functions.guardrail_local import pdf_to_json
 from functions.load.load_pdf import describe_image
-from .serializers import DocumentDetailsSerializer 
+from .serializers import DocumentDetailsSerializer
 
 class PostDataDB(viewsets.ViewSet):
     parser_classes = (FileUploadParser,)
@@ -22,7 +22,7 @@ class PostDataDB(viewsets.ViewSet):
         text = describe_image(pdf)
         print(text)
         output = pdf_to_json(docs=text)
-        out = pdf_to_json(data)
+        out = pdf_to_json(output)
         print(out)
 
         data_dict = json.loads(out)
@@ -120,8 +120,13 @@ class PostDataDB(viewsets.ViewSet):
         return Response({
            "success": "true"
         }, status=status.HTTP_201_CREATED)
-    
+
     def getRecords(self, request):
         records = DocumentDetails.objects.all()
         serializer = DocumentDetailsSerializer(records, many=True)
         return Response(serializer.data)
+
+    def getRecordDetail(self, request):
+        record = DocumentDetails.objects.filter(id=request.GET['id']).first()
+
+        return Response(record.serialize())
