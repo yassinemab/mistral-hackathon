@@ -63,22 +63,20 @@ export default function MapOverview() {
 
   return (
     <div className="w-full h-screen">
-      <div className="w-full flex justify-center py-8 items-center shadow-xl">
-        <HeaderMapForm
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            handleSearch();
-          }}
-          onDestinationChange={(destination) =>
-            setSearchForm({ ...searchForm, address: destination })
-          }
-          onDateChange={(date) => setSearchForm({ ...searchForm, date })}
-          onVehicleChange={(vehicle) =>
-            setSearchForm({ ...searchForm, vehicle })
-          }
-        />
-      </div>
+      <HeaderMapForm
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleSearch();
+        }}
+        onDestinationChange={(destination) =>
+          setSearchForm({ ...searchForm, address: destination })
+        }
+        onDateChange={(date) => setSearchForm({ ...searchForm, date })}
+        onVehicleChange={(vehicle) =>
+          setSearchForm({ ...searchForm, vehicle })
+        }
+      />
       <div className="w-full h-full">
         <MapView
           position={position}
