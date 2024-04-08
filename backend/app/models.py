@@ -25,11 +25,19 @@ class DocumentDetails(BaseModel):
     regulation_issuing_authority = models.TextField()
     regulation_start_date = models.DateField()
     regulation_end_date = models.DateField()
+    measure_type = models.TextField()
+    vehicle_id = models.TextField()
+    vehicle_restricted_type = models.TextField()
+    vehicle_excempted_type = models.TextField()
     road_type = models.TextField()
     road_name = models.TextField()
+    road_number = models.TextField()
+    city_code = models.TextField()
+    city_label = models.TextField()
     from_house_number = models.IntegerField()
     to_house_number = models.IntegerField()
     geometry = models.TextField()
+    period_recurrence_type = models.TextField()
     period_start_date = models.TextField()
     period_end_date = models.DateField()
     time_slot_start_time = models.TimeField()
@@ -41,12 +49,7 @@ class DocumentDetails(BaseModel):
     insee_code = models.TextField()
     city_department = models.TextField()
     street = models.TextField()
-<<<<<<< HEAD
-    # construction_work = models.Choices()
-=======
     construction_work = models.Choices()
-    siret = models.IntegerField()
->>>>>>> 721bdd9 (new changes)
 
     class Meta:
         db_table = "DocumentDetails"
@@ -68,11 +71,19 @@ class DocumentDetails(BaseModel):
             "regulation_issuing_authority": self.regulation_issuing_authority,
             "regulation_start_date":self.regulation_start_date,
             "regulation_end_date": self.regulation_end_date,
+            "measure_type": self.measure_type,
+            "vehicle_restricted_type": self.vehicle_restricted_type,
+            "vehicle_id": self.vehicle_id,
+            "vehicle_excempted_type": self.vehicle_excempted_type,
             "road_type": self.road_type,
             "road_name": self.road_name,
+            "road_number": self.road_number,
+            "city_code": self.city_code,
+            "city_label": self.city_label,
             "from_house_number": self.from_house_number,
             "to_house_number": self.to_house_number,
             "geometry": self.geometry,
+            "period_recurrence_type": self.period_recurrence_type,
             "period_start_date": self.period_start_date,
             "period_end_date": self.period_end_date,
             "time_slot_start_time": self.time_slot_start_time,
