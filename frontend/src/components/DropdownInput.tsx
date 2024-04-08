@@ -47,7 +47,7 @@ export const DropdownInput = ({ onChangeValue, placeholder, classNameInput, opti
           <ul>
             {
               options.map((option) => (
-                <li key={option.value} className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleSelect(option.value)}>{option.label}</li>
+                <li key={option.value} className="text-[#222222] p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleSelect(option.value)}>{option.label}</li>
               ))
             }
           </ul>
