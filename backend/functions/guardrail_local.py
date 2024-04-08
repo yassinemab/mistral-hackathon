@@ -11,8 +11,13 @@ from pydantic import validator
 from rich import print
 import os
 import requests
+from langchain_community.document_loaders import PyPDFLoader
+from langchain.docstore.document import Document
 
-app = typer.Typer()
+import re
+import base64
+import tempfile
+import json
 
 prompt = """
 Given the following context ${document}.
@@ -23,15 +28,107 @@ Only response with valid raw JSON.
 
 """
 
+def structure_date(base64):
+    pdf = read_pdf(base64)
+    json = pdf_to_json(pdf)
+    print(json)
+    return HttpResponse('success')
+
+def read_pdf(document):
+    #buffer = base64.b64decode(document)
+    #with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmpfile:
+    #    tmpfile.write(buffer)
+    #    temp_pdf_path = tmpfile.name
+    loader = PyPDFLoader(document)
+    pages = loader.load_and_split() 
+    page_text = [document.page_content for document in pages] if hasattr(
+        pages[0], 'page_content') else ""
+    return ''.join(page_text)
+
+pdf = "/Users/gijsbertwesteneng/Downloads/FIchiers PDF/collecte_fichiers_arretes_bac_idf_fr/02.03.2020-PERMANENT-POIDS-LOURDS.pdf"
+document = read_pdf(document=pdf)
+
 class Model(BaseModel):
-    Street: str = Field(
-        description="Street",
+    org_name: str = Field(
+        description="Organization name"
     )
-    House_number: int = Field(
-        description="House number",
+    regulation_order: str = Field(
+        description="Regulation order"
     )
-    Constructions_work: int = Field(
-        Field(description="Are they working", validators=[("noop")])
+    regulation_order_created: str = Field(
+        description="Regulation order created date"
+    )
+    regulation_order_status: str = Field(
+        description="Regulation order status"
+    )
+    regulation_status: str = Field(
+        description="Regulation status"
+    )
+    regulation_category: str = Field(
+        description="Regulation category"
+    )
+    regulation_issuing_authority: str = Field(
+        description="Regulation issuing authority"
+    )
+    regulation_start_date: str = Field(
+        description="Regulation start date"
+    )
+    regulation_end_date: str = Field(
+        description="Regulation end date"
+    )
+    road_type: str = Field(
+        description="Road type"
+    )
+    road_name: str = Field(
+        description="Road name"
+    )
+    from_house_number: int = Field(
+        description="From house number"
+    )
+    to_house_number: int = Field(
+        description="To house number"
+    )
+    geometry: str = Field(
+        description="Geometry"
+    )
+    period_start_date: str = Field(
+        description="Period start date"
+    )
+    period_end_date: str = Field(
+        description="Period end date"
+    )
+    time_slot_start_time: str = Field(
+        description="Time slot start time"
+    )
+    time_slot_end_time: str = Field(
+        description="Time slot end time"
+    )
+    day: str = Field(
+        description="Day"
+    )
+    date: str = Field(
+        description="Date"
+    )
+    country: str = Field(
+        description="Country"
+    )
+    city: str = Field(
+        description="City"
+    )
+    insee_code: str = Field(
+        description="INSEE code"
+    )
+    city_department: str = Field(
+        description="City department"
+    )
+    street: str = Field(
+        description="Street"
+    )
+    construction_work: int = Field(
+        description="Are they working", validators=[("noop")]
+    )
+    siret: int = Field(
+        description="SIRET number"
     )
 
 
@@ -67,7 +164,7 @@ def llm_api(prompt_params: str, **kwargs) -> str:
                 }
         ],
         "model": "mistral-large-latest",
-        #"temprature": 0.01,
+        "temperature": 0.01,
         #"max_tokens": 9192,
     }
     response = requests.post(URI, headers=headers, json=huggingface_request, verify=False, stream=False)
