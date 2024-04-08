@@ -28,6 +28,7 @@ Only response with valid raw JSON.
 
 """
 
+
 def structure_date(base64):
     pdf = read_pdf(base64)
     json = pdf_to_json(pdf)
