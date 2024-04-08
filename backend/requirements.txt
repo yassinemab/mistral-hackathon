@@ -1,1 +1,11 @@
+django-cors-headers
+django
+python-dotenv
+daphne
+djangorestframework
+channels
+django-cron
+django-mysql
+mysqlclient
+
 guardails-ai
