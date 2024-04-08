@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { axiosInstance } from "../utils/api/axiosInstance";
 import Icon from "../components/Icon";
 import MapView from "../components/MapView";
+import {HeaderMapForm} from "../components/HeaderMapForm.tsx";
 
 type Location = {
   id?: number;
@@ -63,45 +64,20 @@ export default function MapOverview() {
   return (
     <div className="w-full h-screen">
       <div className="w-full flex justify-center py-8 items-center shadow-xl">
-        <form
+        <HeaderMapForm
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             handleSearch();
           }}
-          className="flex items-center justify-center w-full"
-        >
-          <input
-            type="text"
-            onChange={(e) => {
-              setSearchForm({ ...searchForm, address: e.target.value });
-            }}
-            className="bg-white p-3 text-[#222222] text-xl border-2 border-gray-300 rounded-l-full outline-none"
-            placeholder="Where to park?"
-          />
-          <input
-            type="text"
-            onChange={(e) => {
-              setSearchForm({ ...searchForm, address: e.target.value });
-            }}
-            className="bg-white p-3 text-[#222222] text-xl border-y-2 border-gray-300 outline-none"
-            placeholder="Date / Time"
-          />
-          <input
-            type="text"
-            onChange={(e) => {
-              setSearchForm({ ...searchForm, address: e.target.value });
-            }}
-            className="bg-white p-3 text-[#222222] text-xl border-2 border-gray-300 rounded-r-full outline-none"
-            placeholder="Vehicle"
-          />
-          <button type="submit" className="ml-5 rounded-full p-3 bg-blue-500">
-            <Icon
-              icon="heroicons:magnifying-glass"
-              className="text-white h-7 w-7"
-            />
-          </button>
-        </form>
+          onDestinationChange={(destination) =>
+            setSearchForm({ ...searchForm, address: destination })
+          }
+          onDateChange={(date) => setSearchForm({ ...searchForm, date })}
+          onVehicleChange={(vehicle) =>
+            setSearchForm({ ...searchForm, vehicle })
+          }
+        />
       </div>
       <div className="w-full h-full">
         <MapView
@@ -112,3 +88,4 @@ export default function MapOverview() {
     </div>
   );
 }
+
