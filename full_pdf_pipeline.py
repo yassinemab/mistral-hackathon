@@ -17,11 +17,11 @@ from datetime import date, time
 from openai import OpenAI
 import requests
 import base64
-import fitz  
 import base64
-from PIL import Image
 import os
 import json
+import fitz  
+
 
 api_key = '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'
 def describe_images(pdf_file_path):
@@ -68,8 +68,29 @@ def describe_images(pdf_file_path):
     return all_data
 
 
+import typer
+from django.http import HttpResponse
+from guardrails import Guard
+import guardrails as gd
+from guardrails.validators import ValidLength, TwoWords, ValidRange
+from pydantic import BaseModel, Field
+from typing import List
+import string
+from datetime import datetime, timedelta
+from pydantic import validator
+from rich import print
+import os
+import requests
+from langchain_community.document_loaders import PyPDFLoader
+from langchain.docstore.document import Document
 
+from pydantic import BaseModel, Field
+from datetime import date, time
 
+import re
+import base64
+import tempfile
+import json
 
 prompt = """
 ${document}.
@@ -235,8 +256,9 @@ def llm_api(prompt_params: str, **kwargs) -> str:
 def pdf_to_json(docs):
     structured_orders = complete_request(docs)
     print("###### END RESULT ########")
+    print(structured_orders)
     return structured_orders
 
-
-pdf_path = ''
-document_data = describe_images(pdf_path)
+pdf = "directory"
+out = describe_images(pdf)
+output = pdf_to_json(docs)
