@@ -1,26 +1,51 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../utils/api/axiosInstance";
 import MapView from "../components/MapView";
-import HeaderMapForm from "../components/HeaderMapForm.tsx";
+import { HeaderMapForm } from "../components/HeaderMapForm.tsx";
+import { locationIncludesQuery } from "../components/SearchInput";
 
-type Location = {
-  id?: number;
-  name: string;
-  x_coordinate: number;
-  y_coordinate: number;
+export type Record = {
+  id: number;
+  url: string;
+  org_name: string;
+  regulation_order: string;
+  regulation_order_created: string;
+  regulation_order_status: string;
+  regulation_status: string;
+  regulation_category: string;
+  regulation_issuing_authority: string;
+  regulation_start_date: Date;
+  regulation_end_date: Date;
+  measure_type: string;
+  vehicle_id: string;
+  vehicle_restricted_type: string;
+  vehicle_excempted_type: string;
+  road_type: string;
+  road_name: string;
+  road_number: string;
+  city_code: string;
+  city_label: string;
+  from_house_number: number;
+  to_house_number: number;
+  geometry: string;
+  period_recurrence_type: string;
+  period_start_date: string;
+  period_end_date: Date;
+  // Actually should be a "time" field
+  time_slot_start_time: string;
+  // Actually should be a "time" field
+  time_slot_end_time: string;
+  day: string;
+  date: Date;
+  country: string;
+  city: string;
+  insee_code: string;
+  city_department: string;
+  street: string;
 };
 
 export default function MapOverview() {
-  const [locations, setLocations] = useState<Location[]>([]);
-
-  const [position, setPosition] = useState<[number, number]>([48.8566, 2.3522]);
-  const [showMap, setShowMap] = useState(false);
-
-  const updatePositionByAddress = (lat, lon) => {
-    setShowMap(false);
-    setPosition([lat, lon]);
-    setShowMap(true);
-  };
+  const [records, setRecords] = useState<Record[]>([]);
 
   const [searchForm, setSearchForm] = useState<{
     address: string;
@@ -34,30 +59,20 @@ export default function MapOverview() {
 
   // Fetch all locations initially
   useEffect(() => {
-    axiosInstance.get("/api/v1/locations/").then((res) => {});
+    axiosInstance.get("/api/v1/records/").then((res) => {
+      setRecords(res.data);
+    });
   }, []);
 
-  const handleSearch = async () => {
-    if (searchForm.address) {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        searchForm.address
-      )}`;
+  const [filteredRecords, setFilteredRecords] = useState<Record[]>([]);
 
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.length > 0) {
-          // Nominatim returns latitude and longitude as strings, so they need to be parsed as floats.
-          const { lat, lon } = data[0];
-          updatePositionByAddress(parseFloat(lat), parseFloat(lon));
-        } else {
-          alert("Aucune adresse trouvée.");
-        }
-      } catch (error) {
-        console.error("Erreur lors de la recherche d'adresse:", error);
-        alert("Erreur lors de la recherche. Veuillez réessayer.");
-      }
-    }
+  // TODO: Maybe this needs to be handled in the backend instead of frontend
+  const handleSearch = () => {
+    setFilteredRecords([
+      ...records.filter((record) =>
+        locationIncludesQuery(record, searchForm.address)
+      ),
+    ]);
   };
 
   return (
@@ -68,21 +83,13 @@ export default function MapOverview() {
           e.stopPropagation();
           handleSearch();
         }}
-        onDestinationChange={(destination) =>
-          setSearchForm({ ...searchForm, address: destination })
-        }
-        onDateChange={(date) => setSearchForm({ ...searchForm, date })}
-        onVehicleChange={(vehicle) =>
-          setSearchForm({ ...searchForm, vehicle })
-        }
+        searchForm={searchForm}
+        setSearchForm={setSearchForm}
+        records={records}
       />
-      <div className="relative w-full h-full z-10">
-        <MapView
-          position={position}
-          key={`${position[0]}.${position[1]}`}
-        />
+      <div className="w-full h-full">
+        <MapView records={filteredRecords} />
       </div>
     </div>
   );
 }
-
