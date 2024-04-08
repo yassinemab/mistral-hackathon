@@ -87,7 +87,7 @@ export default function MapOverview() {
         setSearchForm={setSearchForm}
         records={records}
       />
-      <div className="w-full h-full">
+      <div className="relative z-10 w-full h-full">
         <MapView records={filteredRecords} />
       </div>
     </div>
