@@ -1,8 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import UploadPDF from "./pages/UploadPDF";
-import PDFOverview from "./pages/PDFOverview";
-import Geoloc from "./pages/Geoloc.tsx";
+import MapOverview from "./pages/MapOverview";
 
 function App() {
   return (
@@ -10,8 +9,7 @@ function App() {
       <Routes>
         <Route path="" element={<Home />} />
         <Route path="/documents/upload" element={<UploadPDF />} />
-        <Route path="/documents" element={<PDFOverview />} />
-        <Route path="geoloc" element={<Geoloc />} />
+        <Route path="/map" element={<MapOverview />} />
       </Routes>
     </BrowserRouter>
   );
