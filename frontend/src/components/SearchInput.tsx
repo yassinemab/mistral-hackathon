@@ -49,7 +49,7 @@ export default function SearchInput({
         }}
         type="text"
         onChange={onChange}
-        className="bg-white p-3 text-[#222222] text-base font-bold border-2 border-gray-300 rounded-l-full outline-none"
+        className="bg-white p-2 px-4 text-[#222222] text-base border border-gray-300 rounded-l-full outline-none"
         placeholder="Where to park?"
       />
       {focused && (

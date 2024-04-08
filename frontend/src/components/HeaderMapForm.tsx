@@ -21,12 +21,12 @@ export const HeaderMapForm = ({
   records,
 }: HeaderMapFormProps) => {
   return (
-    <div className="w-full flex justify-center py-4 items-center shadow-xl">
+    <div className="relative z-20 w-full flex justify-center py-4 items-center">
       <form
         onSubmit={onSubmit}
-        className="flex items-center justify-center w-full rounded-full"
+        className="flex items-center justify-center w-full rounded-full gap-2"
       >
-        <div className="flex items-center relative rounded-full shadow-lg">
+        <div className="flex items-center relative rounded-full shadow-md">
           <SearchInput
             value={searchForm.address}
             records={records}
@@ -40,7 +40,7 @@ export const HeaderMapForm = ({
             onChange={(e) => {
               setSearchForm({ ...searchForm, date: e.target.value });
             }}
-            className="bg-white p-3 text-[#222222] text-base font-bold border-y-2 border-gray-300 outline-none"
+            className="bg-white p-2 px-4 text-[#222222] text-base border-y border-gray-300 outline-none"
             placeholder="Date / Time"
           />
           <DropdownInput
@@ -55,16 +55,16 @@ export const HeaderMapForm = ({
               { value: "Bike", label: "Bike" },
             ]}
           />
+        </div>
           <button
             type="submit"
-            className="-ml-[50px] rounded-full p-2 bg-pink-400"
+            className="rounded-full p-2 bg-pink-400"
           >
             <Icon
               icon="heroicons:magnifying-glass"
               className="text-white h-6 w-6"
             />
           </button>
-        </div>
       </form>
     </div>
   );
