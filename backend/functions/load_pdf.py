@@ -14,7 +14,6 @@ def structure_date(base64):
 
     return 200
 
-
 def read_pdf(document):
     buffer = base64.b64decode(document)
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmpfile:
