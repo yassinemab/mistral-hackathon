@@ -61,6 +61,7 @@ class DocumentDetails(BaseModel):
 
     def serialize(self):
         return {
+            "id": self.id,
             "org_name": self.org_name,
             "regulation_order": self.regulation_order,
             "regulation_order_created": self.regulation_order_created,
@@ -91,10 +92,7 @@ class DocumentDetails(BaseModel):
             "date": self.date,
             "country": self.country,
             "street": self.street,
-            "construction_work": self.construction_work,
             "country": self.country,
             "street": self.street,
-            "construction_work": self.construction_work,
-            "siret": self.siret,
             "city": self.city
         }

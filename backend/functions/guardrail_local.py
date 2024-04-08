@@ -160,7 +160,7 @@ def llm_api(prompt_params: str, **kwargs) -> str:
     "Content-Type": "application/json",
     "Authorization": "Bearer 4Goh7YaESXWYxjqVtg0y2QRGXuKnEBxP"
     }
-    
+
     # Single message request structure, edit the request where needed
     huggingface_request = {
         "messages": [
@@ -193,56 +193,58 @@ def pdf_to_json(docs):
     return structured_orders
 
 
-dir_path = '/Users/gijsbertwesteneng/Downloads/output_text'
+if __name__ == "__main__":
 
-# Loop through each file in the directory
-for filename in os.listdir(dir_path):
-    if filename.endswith('.txt'):  # if you're using text files
-        file_path = os.path.join(dir_path, filename)
+    dir_path = '/Users/gijsbertwesteneng/Downloads/output_text'
 
-        # Convert the text file to JSON
-        with open(file_path, 'r') as file:
-            data = file.read()
-            out = pdf_to_json(data)
+    # Loop through each file in the directory
+    for filename in os.listdir(dir_path):
+        if filename.endswith('.txt'):  # if you're using text files
+            file_path = os.path.join(dir_path, filename)
 
-        # Load the JSON data
-        data_dict = json.loads(out)
+            # Convert the text file to JSON
+            with open(file_path, 'r') as file:
+                data = file.read()
+                out = pdf_to_json(data)
 
-        # Create a new instance of DocumentDetails and set its attributes
-        document = DocumentDetails()
-        document.org_name = data_dict.get('org_name', '')
-        document.regulation_order = data_dict.get('regulation_order', '')
-        document.regulation_order_created = data_dict.get('regulation_order_created', '')
-        document.regulation_order_status = data_dict.get('regulation_order_status', '')
-        document.regulation_status = data_dict.get('regulation_status', '')
-        document.regulation_category = data_dict.get('regulation_category', '')
-        document.regulation_issuing_authority = data_dict.get('regulation_issuing_authority', '')
-        document.regulation_start_date = data_dict.get('regulation_start_date', '')
-        document.regulation_end_date = data_dict.get('regulation_end_date', '')
-        document.measure_type = data_dict.get('measure_type', '')
-        document.vehicle_id = data_dict.get('vehicle_id', '')
-        document.vehicle_restricted_type = data_dict.get('vehicle_restricted_type', '')
-        document.vehicle_excempted_type = data_dict.get('vehicle_excempted_type', '')
-        document.road_type = data_dict.get('road_type', '')
-        document.road_name = data_dict.get('road_name', '')
-        document.road_number = data_dict.get('road_number', '')
-        document.city_code = data_dict.get('city_code', '')
-        document.city_label = data_dict.get('city_label', '')
-        document.from_house_number = data_dict.get('from_house_number', 0)
-        document.to_house_number = data_dict.get('to_house_number', 0)
-        document.geometry = data_dict.get('geometry', '')
-        document.period_recurrence_type = data_dict.get('period_recurrence_type', '')
-        document.period_start_date = data_dict.get('period_start_date', '')
-        document.period_end_date = data_dict.get('period_end_date', '')
-        document.time_slot_start_time = data_dict.get('time_slot_start_time', '')
-        document.time_slot_end_time = data_dict.get('time_slot_end_time', '')
-        document.day = data_dict.get('day', '')
-        document.date = data_dict.get('date', '')
-        document.country = data_dict.get('country', '')
-        document.city = data_dict.get('city', '')
-        document.insee_code = data_dict.get('insee_code', '')
-        document.city_department = data_dict.get('city_department', '')
-        document.street = data_dict.get('street', '')
+            # Load the JSON data
+            data_dict = json.loads(out)
 
-        # Save the document to the database
-        document.save()
+            # Create a new instance of DocumentDetails and set its attributes
+            document = DocumentDetails()
+            document.org_name = data_dict.get('org_name', '')
+            document.regulation_order = data_dict.get('regulation_order', '')
+            document.regulation_order_created = data_dict.get('regulation_order_created', '')
+            document.regulation_order_status = data_dict.get('regulation_order_status', '')
+            document.regulation_status = data_dict.get('regulation_status', '')
+            document.regulation_category = data_dict.get('regulation_category', '')
+            document.regulation_issuing_authority = data_dict.get('regulation_issuing_authority', '')
+            document.regulation_start_date = data_dict.get('regulation_start_date', '')
+            document.regulation_end_date = data_dict.get('regulation_end_date', '')
+            document.measure_type = data_dict.get('measure_type', '')
+            document.vehicle_id = data_dict.get('vehicle_id', '')
+            document.vehicle_restricted_type = data_dict.get('vehicle_restricted_type', '')
+            document.vehicle_excempted_type = data_dict.get('vehicle_excempted_type', '')
+            document.road_type = data_dict.get('road_type', '')
+            document.road_name = data_dict.get('road_name', '')
+            document.road_number = data_dict.get('road_number', '')
+            document.city_code = data_dict.get('city_code', '')
+            document.city_label = data_dict.get('city_label', '')
+            document.from_house_number = data_dict.get('from_house_number', 0)
+            document.to_house_number = data_dict.get('to_house_number', 0)
+            document.geometry = data_dict.get('geometry', '')
+            document.period_recurrence_type = data_dict.get('period_recurrence_type', '')
+            document.period_start_date = data_dict.get('period_start_date', '')
+            document.period_end_date = data_dict.get('period_end_date', '')
+            document.time_slot_start_time = data_dict.get('time_slot_start_time', '')
+            document.time_slot_end_time = data_dict.get('time_slot_end_time', '')
+            document.day = data_dict.get('day', '')
+            document.date = data_dict.get('date', '')
+            document.country = data_dict.get('country', '')
+            document.city = data_dict.get('city', '')
+            document.insee_code = data_dict.get('insee_code', '')
+            document.city_department = data_dict.get('city_department', '')
+            document.street = data_dict.get('street', '')
+
+            # Save the document to the database
+            document.save()

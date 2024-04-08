@@ -53,13 +53,13 @@ export default function RecordDetailPage() {
   const [record, setRecord] = useState<Record | null>(null);
 
   useEffect(() => {
-    axiosInstance.get(`/api/v1/record/${id}`).then((res) => {
+    axiosInstance.get(`/api/v1/get_data_detail/?id=${id}`).then((res) => {
       setRecord(res.data.record);
     });
   }, []);
 
   return (
-    <div className="flex h-screen bg-white w-full">
+    <div className="flex h-screen bg-white w-full" ref={containerRef}>
       {record && (
         <>
           <div className="w-[50%] h-full">

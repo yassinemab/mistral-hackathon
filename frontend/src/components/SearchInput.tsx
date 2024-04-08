@@ -4,11 +4,11 @@ import { Record } from "../pages/MapOverview";
 export const locationIncludesQuery = (location: Record, query: string) => {
 
   return (
-    location.city.includes(query) ||
-    location.city_department.includes(query) ||
-    location.country.includes(query) ||
-    location.street.includes(query) ||
-    location.road_name.includes(query)
+    location.city?.includes(query) ||
+    location.city_department?.includes(query) ||
+    location.country?.includes(query) ||
+    location.street?.includes(query) ||
+    location.road_name?.includes(query)
   );
 };
 
