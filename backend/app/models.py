@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-
 class BaseModel(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
@@ -16,40 +15,40 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 class DocumentDetails(BaseModel):
-    org_name = models.TextField()
-    regulation_order = models.TextField()
-    regulation_order_created = models.TextField()
-    regulation_order_status = models.TextField()
-    regulation_status = models.TextField()
-    regulation_category = models.TextField()
-    regulation_issuing_authority = models.TextField()
-    regulation_start_date = models.DateField()
-    regulation_end_date = models.DateField()
-    measure_type = models.TextField()
-    vehicle_id = models.TextField()
-    vehicle_restricted_type = models.TextField()
-    vehicle_excempted_type = models.TextField()
-    road_type = models.TextField()
-    road_name = models.TextField()
-    road_number = models.TextField()
-    city_code = models.TextField()
-    city_label = models.TextField()
-    from_house_number = models.IntegerField()
-    to_house_number = models.IntegerField()
-    geometry = models.TextField()
-    period_recurrence_type = models.TextField()
-    period_start_date = models.TextField()
-    period_end_date = models.DateField()
-    time_slot_start_time = models.TimeField()
-    time_slot_end_time = models.TimeField()
-    day = models.TextField()
-    date = models.DateField()
-    country = models.TextField()
-    city = models.TextField()
-    insee_code = models.TextField()
-    city_department = models.TextField()
-    street = models.TextField()
-    construction_work = models.Choices()
+    org_name = models.TextField(default='', null=True, blank=True)
+    regulation_order = models.TextField(default='', null=True, blank=True)
+    regulation_order_created = models.TextField(default='', null=True, blank=True)
+    regulation_order_status = models.TextField(default='', null=True, blank=True)
+    regulation_status = models.TextField(default='', null=True, blank=True)
+    regulation_category = models.TextField(default='', null=True, blank=True)
+    regulation_issuing_authority = models.TextField(default='', null=True, blank=True)
+    regulation_start_date = models.TextField(default='', null=True, blank=True)
+    regulation_end_date = models.TextField(default='', null=True, blank=True)
+    measure_type = models.TextField(default='', null=True, blank=True)
+    vehicle_id = models.TextField(default='', null=True, blank=True)
+    vehicle_restricted_type = models.TextField(default='', null=True, blank=True)
+    vehicle_excempted_type = models.TextField(default='', null=True, blank=True)
+    road_type = models.TextField(default='', null=True, blank=True)
+    road_name = models.TextField(default='', null=True, blank=True)
+    road_number = models.TextField(default='', null=True, blank=True)
+    city_code = models.TextField(default='', null=True, blank=True)
+    city_label = models.TextField(default='', null=True, blank=True)
+    from_house_number = models.IntegerField(default=0, null=True, blank=True)
+    to_house_number = models.IntegerField(default=0, null=True, blank=True)
+    geometry = models.TextField(default='', null=True, blank=True)
+    period_recurrence_type = models.TextField(default='', null=True, blank=True)
+    period_start_date = models.TextField(default='', null=True, blank=True)
+    period_end_date = models.TextField(default='', null=True, blank=True)
+    time_slot_start_time = models.TextField(default='', null=True, blank=True)
+    time_slot_end_time = models.TextField(default='', null=True, blank=True)
+    day = models.TextField(default='', null=True, blank=True)
+    date = models.TextField(default='', null=True, blank=True)
+    country = models.TextField(default='', null=True, blank=True)
+    city = models.CharField(default='', max_length=100, null=True, blank=True)
+    insee_code = models.TextField(default='', null=True, blank=True)
+    city_department = models.TextField(default='', null=True, blank=True)
+    street = models.TextField(default='', null=True, blank=True)
+    #construction_work = models.Choices()
 
     class Meta:
         db_table = "DocumentDetails"
@@ -96,5 +95,6 @@ class DocumentDetails(BaseModel):
             "country": self.country,
             "street": self.street,
             "construction_work": self.construction_work,
-            "siret": self.siret
+            "siret": self.siret,
+            "city": self.city
         }

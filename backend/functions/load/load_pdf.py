@@ -8,9 +8,39 @@ import fitz
 import base64
 import io
 
+# def structure_date(base64):
+#     pdf = read_pdf(base64)
+#     json = pdf_to_json(pdf)
+#     print(json)
+#     return HttpResponse('success')
+
+# def read_pdf(document):
+#     #buffer = base64.b64decode(document)
+#     #with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmpfile:
+#     #    tmpfile.write(buffer)
+#     #    temp_pdf_path = tmpfile.name
+#     loader = PyPDFLoader(document=document)
+#     pages = loader.load_and_split() 
+#     page_text = [document.page_content for document in pages] if hasattr(
+#         pages[0], 'page_content') else ""
+#     return ''.join(page_text)
+# pdf = "/Users/connor/Library/Mobile Documents/com~apple~CloudDocs/Teleqo Screening Test.pdf"
+# pages = read_pdf(pdf)
+# print(pages)
+
 
 # client = OpenAI()
 api_key = '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'
+# OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+# def pdf_page_to_image_base64(pdf_file_path, page_number=0):
+#     doc = fitz.open(pdf_file_path)
+#     page = doc.load_page(page_number)  
+#     pix = page.get_pixmap()
+#     img_bytes = pix.tobytes("png")
+#     doc.close()
+#     img_base64 = base64.b64encode(img_bytes).decode('utf-8')
+#     return img_base64
 
 def pdf_to_images_base64(pdf_file_path):
     doc = fitz.open(pdf_file_path)
@@ -58,6 +88,3 @@ def describe_image(pdf):
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
     response_data = response.json()
     return response_data
-
-
-

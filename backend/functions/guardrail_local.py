@@ -1,6 +1,5 @@
 import typer
 from django.http import HttpResponse
-import json
 from guardrails import Guard
 import guardrails as gd
 from guardrails.validators import ValidLength, TwoWords, ValidRange
@@ -17,11 +16,14 @@ from langchain.docstore.document import Document
 
 from pydantic import BaseModel, Field
 from datetime import date, time
+from .load.load_pdf import describe_image
 
 import re
 import base64
 import tempfile
 import json
+
+from app.models import DocumentDetails
 
 prompt = """
 ${document}.
@@ -29,30 +31,6 @@ ${document}.
 ${gr.complete_json_suffix_v2}
 
 """
-
-#def structure_date(base64):
-#    pdf = read_pdf(base64)
-#    json = pdf_to_json(pdf)
-#    print(json)
-#    return HttpResponse('success')
-
-#def read_pdf(document):
-    #buffer = base64.b64decode(document)
-    #with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmpfile:
-    #    tmpfile.write(buffer)
-    #    temp_pdf_path = tmpfile.name
-    #print(document)
-#    loader = PyPDFLoader(document)
-#    pages = loader.load_and_split()
-#    print(pages)
-#    page_text = [document.page_content for document in pages] if hasattr(
-#        pages[0], 'page_content') else ""
-#    return ''.join(page_text)
-
-#pdf = '/Users/gijsbertwesteneng/Downloads/Stappen mail overzetten.pdf'
-#document = "RÉPUBLIQUE FRANÇAISE LIBERTÉ - ÉGALITÉ - FRATERNITÉVILLE DE VINCENNES VAL-DE-MARNEARRÊTÉ RÉGLEMENTANT LE STATIONNEMENT AVENUE DE VORGESLe Maire de Vincennes, Conseiller régional d'Île-de-France,Vu el Code général des collectivités territoriales ;Vu le Code de la route ;Vu el Code pénal ;Vu le Code de al voirie routière ;Vu l'arrêté interministériel du 24 novembre 1967 relatif à la signalisation routière ;Vu l'arrêté municipal n°4113 en date du 17 novembre 2006 créant un emplacement de livraison face au n°6, avenue de Vorges destiné au stationnement des véhicules réalisant des opérations de manutention ;Vu la consultation du Commissariat de Police en date du 16 février 2011 ;Considérant qu'il convient de réglementer les opérations de manutention à Vincennes de manière à limiter al gêneque ces opérations peuvent apporter à la circulation générale ;Considérant qu'il y a lieu, compte tenu de la difficulté des conditions de circulation et de stationnement dans la ville, de limiter la durée de ces opérations sur les zones aménagées à cet effet du lundi au samedi de 7 h à 20 h ;ARRÊTÉARTICLE I - Le présent arrêté abroge et remplace l'arrêté municipal n° 4113 en date du 17 novembre 2006.Àcompter du J° juin 201 - du lundi au samedi de 7hà20 h: AVENUEDEVORGESfaceaun°6(surunelongueurde15mètres- troisemplacements)Un stationnement sera réservé à l'arrêt des véhicules effectuant des opérations de manutention.Le stationnement des véhicules n'effectuant pas d'opérations de chargements ou déchargements de marchandise seradéclaré comme gênant, selon les termes de l'article R 417.10 du Code de la route et les véhicules en infraction pourront faire l'objet d'un enlèvement immédiat.En dehors de ces jours et horaires, el stationnement des véhicules autres que ceux effectuant des manutentions sera autorise.ARTICLE I - La Vile de VINCENNES procédera à al pose de al matérialisation de ces dispositions.ARTICLE I I - Les infractions au présent arrêté seront constatées par des procès-verbaux.ARTICLE VI - Le Directeur général des services de al ville, el Directeur général des services techniques de la vile et le Commissaire de Police, sont chargés, chacun en ce qui el concerne de l'application du présent arêté.ARTICLE V- Le présent arrêté sera publié au Recueil des actes administratifs.Vincennes, le23 MAI 201Hôtel de Ville - 94304 VINCENNES Cedex - Standard: 01 43 98 65 00 - www.vincennes.fr Ligne directe :01 43 98 66 2 - Télécopie :01 43 98 67 89"
-
-#read_pdf(document=pdf)
 
 ### MAIN CODE ###
 class Model(BaseModel):
@@ -211,4 +189,60 @@ def llm_api(prompt_params: str, **kwargs) -> str:
 def pdf_to_json(docs):
     structured_orders = complete_request(docs)
     print("###### END RESULT ########")
+    print(structured_orders)
     return structured_orders
+
+
+dir_path = '/Users/gijsbertwesteneng/Downloads/output_text'
+
+# Loop through each file in the directory
+for filename in os.listdir(dir_path):
+    if filename.endswith('.txt'):  # if you're using text files
+        file_path = os.path.join(dir_path, filename)
+
+        # Convert the text file to JSON
+        with open(file_path, 'r') as file:
+            data = file.read()
+            out = pdf_to_json(data)
+
+        # Load the JSON data
+        data_dict = json.loads(out)
+
+        # Create a new instance of DocumentDetails and set its attributes
+        document = DocumentDetails()
+        document.org_name = data_dict.get('org_name', '')
+        document.regulation_order = data_dict.get('regulation_order', '')
+        document.regulation_order_created = data_dict.get('regulation_order_created', '')
+        document.regulation_order_status = data_dict.get('regulation_order_status', '')
+        document.regulation_status = data_dict.get('regulation_status', '')
+        document.regulation_category = data_dict.get('regulation_category', '')
+        document.regulation_issuing_authority = data_dict.get('regulation_issuing_authority', '')
+        document.regulation_start_date = data_dict.get('regulation_start_date', '')
+        document.regulation_end_date = data_dict.get('regulation_end_date', '')
+        document.measure_type = data_dict.get('measure_type', '')
+        document.vehicle_id = data_dict.get('vehicle_id', '')
+        document.vehicle_restricted_type = data_dict.get('vehicle_restricted_type', '')
+        document.vehicle_excempted_type = data_dict.get('vehicle_excempted_type', '')
+        document.road_type = data_dict.get('road_type', '')
+        document.road_name = data_dict.get('road_name', '')
+        document.road_number = data_dict.get('road_number', '')
+        document.city_code = data_dict.get('city_code', '')
+        document.city_label = data_dict.get('city_label', '')
+        document.from_house_number = data_dict.get('from_house_number', 0)
+        document.to_house_number = data_dict.get('to_house_number', 0)
+        document.geometry = data_dict.get('geometry', '')
+        document.period_recurrence_type = data_dict.get('period_recurrence_type', '')
+        document.period_start_date = data_dict.get('period_start_date', '')
+        document.period_end_date = data_dict.get('period_end_date', '')
+        document.time_slot_start_time = data_dict.get('time_slot_start_time', '')
+        document.time_slot_end_time = data_dict.get('time_slot_end_time', '')
+        document.day = data_dict.get('day', '')
+        document.date = data_dict.get('date', '')
+        document.country = data_dict.get('country', '')
+        document.city = data_dict.get('city', '')
+        document.insee_code = data_dict.get('insee_code', '')
+        document.city_department = data_dict.get('city_department', '')
+        document.street = data_dict.get('street', '')
+
+        # Save the document to the database
+        document.save()

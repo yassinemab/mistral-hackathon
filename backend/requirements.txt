@@ -10,3 +10,6 @@ mysqlclient
 pymysql
 
 guardrails-ai
+pymupdf
+langchain_community
+langchain
