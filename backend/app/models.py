@@ -15,58 +15,10 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
-
-class Post(BaseModel):
-    title = models.TextField()
-    description = models.TextField()
-
-    class Meta:
-        db_table = "Post"
-
-    def __str__(self):
-        return self.title
-
-    def __repr__(self):
-        return self.title
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "description": self.description,
-
-            "created_at": self.created_at,
-            "updated_at": self.updated_at,
-        }
-    
-
-class Post(BaseModel):
-    title = models.TextField()
-    description = models.TextField()
-
-    class Meta:
-        db_table = "Post"
-
-    def __str__(self):
-        return self.title
-
-    def __repr__(self):
-        return self.title
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "description": self.description,
-
-            "created_at": self.created_at,
-            "updated_at": self.updated_at,
-        }
-    
 class DocumentDetails(BaseModel):
     country = models.TextField()
     street = models.TextField()
-    construction_work = models.Choices()
+    # construction_work = models.Choices()
 
     class Meta:
         db_table = "DocumentDetails"
@@ -83,9 +35,3 @@ class DocumentDetails(BaseModel):
             "street": self.street,
             "construction_work": self.construction_work
         }
-
-
-
-
-    
-
