@@ -23,8 +23,6 @@ Only response with valid raw JSON.
 
 """
 
-docs =  "Bitcoin (abbreviation: BTC[a]; sign: ₿) is the first decentralized cryptocurrency. Nodes in the peer-to-peer bitcoin network verify transactions through cryptography and record them in a public distributed ledger, called a blockchain, without central oversight. Consensus between nodes is achieved using a computationally intensive process based on proof of work, called mining, that requires increasing quantities of electricity and guarantees the security of the bitcoin blockchain.[5] " # Should loop through all example answer in CSV format
-
 class Model(BaseModel):
     Street: str = Field(
         description="Street",
