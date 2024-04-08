@@ -5,7 +5,8 @@ daphne
 djangorestframework
 channels
 django-cron
-django-mysql
+#django-mysql
 mysqlclient
+pymysql
 
-guardails-ai
+guardrails-ai
