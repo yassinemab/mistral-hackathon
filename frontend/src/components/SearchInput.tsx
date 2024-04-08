@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Record } from "../pages/MapOverview";
 
 export const locationIncludesQuery = (location: Record, query: string) => {
+
   return (
     location.city.includes(query) ||
     location.city_department.includes(query) ||
