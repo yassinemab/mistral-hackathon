@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../utils/api/axiosInstance";
-import Icon from "../components/Icon";
 import MapView from "../components/MapView";
-import {HeaderMapForm} from "../components/HeaderMapForm.tsx";
+import HeaderMapForm from "../components/HeaderMapForm.tsx";
 
 type Location = {
   id?: number;
@@ -77,7 +76,7 @@ export default function MapOverview() {
           setSearchForm({ ...searchForm, vehicle })
         }
       />
-      <div className="w-full h-full">
+      <div className="relative w-full h-full z-10">
         <MapView
           position={position}
           key={`${position[0]}.${position[1]}`}

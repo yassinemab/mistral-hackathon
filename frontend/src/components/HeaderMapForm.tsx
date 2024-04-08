@@ -1,4 +1,12 @@
+import { useState } from "react";
 import Icon from "./Icon.tsx";
+import {DropdownInput} from "./DropdownInput.tsx";
+// import DatePicker from "react-date-picker";
+// import DateTimePicker from 'react-datetime-picker';
+
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 interface HeaderMapFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -6,9 +14,9 @@ interface HeaderMapFormProps {
   onDateChange: (date: Date) => void;
   onVehicleChange: (vehicle: string) => void;
 }
-export const HeaderMapForm = ({onSubmit, onDestinationChange, onDateChange, onVehicleChange}: HeaderMapFormProps) => {
+const HeaderMapForm = ({onSubmit, onDestinationChange, onDateChange, onVehicleChange}: HeaderMapFormProps) => {
   return(
-    <div className="w-full flex justify-center py-4 items-center shadow-xl">
+    <div className="relative w-full flex justify-center py-4 items-center shadow-xl z-40">
       <form
         onSubmit={onSubmit}
         className="flex items-center justify-center w-full"
@@ -37,6 +45,16 @@ export const HeaderMapForm = ({onSubmit, onDestinationChange, onDateChange, onVe
           className="bg-white py-2 px-4 text-[#222222] text-md border border-gray-300 rounded-r-full outline-none"
           placeholder="Vehicle"
         />
+        <DropdownInput
+          onChangeValue={(value) => onVehicleChange(value)}
+          placeholder="Vehicle"
+          classNameInput="bg-white py-2 px-4 text-[#222222] text-md border border-gray-300 rounded-r-full outline-none"
+          options={[
+            {value: 'Car', label: 'Car'},
+            {value: 'Moto', label: 'Moto'},
+            {value: 'Bike', label: 'Bike'},
+          ]}
+        />
         <button type="submit" className="ml-5 rounded-full p-2 bg-blue-500">
           <Icon
             icon="heroicons:magnifying-glass"
@@ -47,3 +65,5 @@ export const HeaderMapForm = ({onSubmit, onDestinationChange, onDateChange, onVe
     </div>
   )
 }
+
+export default HeaderMapForm;
