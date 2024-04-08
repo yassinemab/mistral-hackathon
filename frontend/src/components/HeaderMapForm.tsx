@@ -2,10 +2,6 @@ import { useState } from "react";
 import Icon from "./Icon.tsx";
 import { DropdownInput } from "./DropdownInput.tsx";
 import SearchInput from "./SearchInput.tsx";
-// import DatePicker from "react-date-picker";
-// import DateTimePicker from 'react-datetime-picker';
-
-type ValuePiece = Date | null;
 
 
 interface HeaderMapFormProps {
@@ -45,6 +41,7 @@ export const HeaderMapForm = ({
           />
           <DropdownInput
             onChangeValue={(value) => {
+              console.log("VAL", value)
               setSearchForm({ ...searchForm, vehicle: value });
             }}
             placeholder="Vehicle"
