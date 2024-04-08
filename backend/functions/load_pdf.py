@@ -1,20 +1,19 @@
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.docstore.document import Document
 from guardrail_local import pdf_to_json
-
-import re
 import base64
-import tempfile
-import json
+from openai import OpenAI
+import requests
+import base64
+import fitz  
+import base64
+import io
 
-def structure_date(base64):
-    pdf = read_pdf(base64)
-    json = pdf_to_json(pdf)
-    print(json)
-
-    
-
-    return HttpResponse('success')
+# def structure_date(base64):
+#     pdf = read_pdf(base64)
+#     json = pdf_to_json(pdf)
+#     print(json)
+#     return HttpResponse('success')
 
 # def read_pdf(document):
 #     #buffer = base64.b64decode(document)
@@ -31,30 +30,35 @@ def structure_date(base64):
 # print(pages)
 
 
-from openai import OpenAI
-import requests
-import base64
-import fitz  
-import base64
-from PIL import Image
-import io
-
-
 # client = OpenAI()
 api_key = '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'
 # OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-def pdf_page_to_image_base64(pdf_file_path, page_number=0):
-    doc = fitz.open(pdf_file_path)
-    page = doc.load_page(page_number)  
-    pix = page.get_pixmap()
-    img_bytes = pix.tobytes("png")
-    doc.close()
-    img_base64 = base64.b64encode(img_bytes).decode('utf-8')
-    return img_base64
 
+# def pdf_page_to_image_base64(pdf_file_path, page_number=0):
+#     doc = fitz.open(pdf_file_path)
+#     page = doc.load_page(page_number)  
+#     pix = page.get_pixmap()
+#     img_bytes = pix.tobytes("png")
+#     doc.close()
+#     img_base64 = base64.b64encode(img_bytes).decode('utf-8')
+#     return img_base64
+
+def pdf_to_images_base64(pdf_file_path):
+    doc = fitz.open(pdf_file_path)
+    base64_images = []
+    
+    for page_num in range(len(doc)):
+        page = doc.load_page(page_num)
+        pix = page.get_pixmap()
+        img_bytes = pix.tobytes("png")
+        img_base64 = base64.b64encode(img_bytes).decode('utf-8')
+        base64_images.append(img_base64)
+    
+    doc.close()
+    return base64_images
 
 def describe_image(pdf):
-    image = pdf_page_to_image_base64(pdf)
+    image = pdf_to_images_base64(pdf)
     headers = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {api_key}"
