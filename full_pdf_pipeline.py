@@ -67,10 +67,6 @@ def describe_images(pdf_file_path):
 
     return all_data
 
-
-
-
-
 prompt = """
 ${document}.
 
@@ -223,6 +219,7 @@ def llm_api(prompt_params: str, **kwargs) -> str:
         "temperature": 0.1,
         #"max_tokens": 9192,
     }
+    
     response = requests.post(URI, headers=headers, json=huggingface_request, verify=False, stream=False)
     if response.status_code == 200:
         result = response.json()
